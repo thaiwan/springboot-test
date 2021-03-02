@@ -57,18 +57,35 @@ public class ProductsController {
     @PutMapping("/{product_id}")
     @ResponseStatus(HttpStatus.OK)
     public long updateById(@PathVariable("product_id") long id, @RequestBody Product product) {
-        if (!productService.existsById(id)) {
-            throw new IllegalArgumentException("Product doesn't exists");
+        try {
+            ProductEntity entity = productService.findById(id);
+            productService.save(convertDtoToEntity(product, entity));
+            return id;
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("Cannot update");
         }
-        productService.save(convertDtoToEntity(product));
-        return id;
     }
 
-    @GetMapping("/")
+    @GetMapping(value = "", params = "category")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public List<Product> findByCategory(@RequestParam String category) {
+
+        category = category.replaceAll("%20", " ");
         List<ProductEntity> entityList = productService.findByCategory(category);
+        return entityList.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+
+    }
+
+    @GetMapping(value = "", params = {"category", "availability"})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> findByCategoryAndAvailability(@RequestParam String category, @RequestParam Boolean availability) {
+
+        category = category.replaceAll("%20", " ");
+        List<ProductEntity> entityList = productService.findByCategoryAndAvailability(category, availability);
         return entityList.stream()
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
@@ -81,6 +98,11 @@ public class ProductsController {
 
     private ProductEntity convertDtoToEntity(Product product) {
         return mapper.map(product, ProductEntity.class);
+    }
+
+    private ProductEntity convertDtoToEntity(Product product, ProductEntity entity) {
+        mapper.map(product, entity);
+        return entity;
     }
 
 }

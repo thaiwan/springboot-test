@@ -1,11 +1,22 @@
 package com.hackerrank.eshopping.product.dashboard.entity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class ProductEntity {
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String category;
@@ -13,51 +24,8 @@ public class ProductEntity {
     private Double discountedPrice;
     private Boolean availability;
 
-    public Long getId() {
-        return id;
-    }
+    @Formula("((retail_price - discounted_price)/retail_price)*100")
+    @Setter(value = AccessLevel.PRIVATE)
+    private Integer percentage;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Double getRetailPrice() {
-        return retailPrice;
-    }
-
-    public void setRetailPrice(Double retailPrice) {
-        this.retailPrice = retailPrice;
-    }
-
-    public Double getDiscountedPrice() {
-        return discountedPrice;
-    }
-
-    public void setDiscountedPrice(Double discountedPrice) {
-        this.discountedPrice = discountedPrice;
-    }
-
-    public Boolean getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Boolean availability) {
-        this.availability = availability;
-    }
 }

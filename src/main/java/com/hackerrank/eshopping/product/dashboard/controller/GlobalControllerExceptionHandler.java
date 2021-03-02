@@ -13,12 +13,13 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {IllegalArgumentException.class})
-    protected void handleIllegalArgumentException(){
+    protected void handleIllegalArgumentException() {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = {NoSuchElementException.class})
-    protected void handleNotFoundException(){}
+    protected void handleNotFoundException() {
+    }
 
 
 }

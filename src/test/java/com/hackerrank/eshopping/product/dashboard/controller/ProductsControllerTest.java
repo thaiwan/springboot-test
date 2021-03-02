@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(OrderedTestRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Ignore
 public class ProductsControllerTest {
     @ClassRule
     public static final SpringClassRule springClassRule = new SpringClassRule();
